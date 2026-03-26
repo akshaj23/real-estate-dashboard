@@ -2,9 +2,7 @@ import streamlit as st
 import pandas as pd
 from groq import Groq
 
-# ==========================================
-# 0. INITIALIZE SESSION STATE (MEMORY)
-# ==========================================
+
 if 'archetype_target' not in st.session_state:
     st.session_state.archetype_target = "All Properties"
 if 'map_target' not in st.session_state:
@@ -19,9 +17,7 @@ def jump_to_location(map_label):
     st.session_state.archetype_target = "All Properties"
     st.session_state.map_target = map_label
 
-# ==========================================
-# 1. LOAD DATA & PREP CONTEXT
-# ==========================================
+
 df = pd.read_csv("leaseup_dashboard_data.csv")
 
 market_txt = df.groupby('Market')['LeaseUpTime'].mean().round(2).to_string()
@@ -48,9 +44,7 @@ Top Recommended Properties by Archetype and Submarket:
 {top_props_txt}
 """
 
-# ==========================================
-# 2. DASHBOARD UI & SIDEBAR
-# ==========================================
+
 st.set_page_config(page_title="Investment AI Assistant", layout="wide")
 st.title("🏙️ Real Estate Investment Dashboard")
 
@@ -67,9 +61,7 @@ with st.sidebar:
         st.warning("Local Mode: Cloud Vault not found.")
         api_key = st.text_input("Paste Groq API Key to test locally:", type="password")
 
-# ==========================================
-# 3. GEOTAG BOARD (Interactive Map Explorer)
-# ==========================================
+
 st.subheader("📍 Geotag Board: Locality Explorer")
 st.write("Filter by investment strategy and jump directly to specific properties on the map.")
 
@@ -107,9 +99,7 @@ with map_col:
     else:
         st.warning("No GPS coordinates found for this selection.")
 
-# ==========================================
-# 4. AI CHAT INTERFACE
-# ==========================================
+
 st.subheader("🤖 Ask the Investment Assistant")
 
 with st.form(key="chat_form"):
