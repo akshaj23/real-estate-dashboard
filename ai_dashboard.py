@@ -2,17 +2,14 @@ import streamlit as st
 import pandas as pd
 import ollama
 
-# ==========================================
-# 1. LOAD DATA & PREP CONTEXT
-# ==========================================
-df = pd.read_csv("/Users/akshajchandwani/Affinus Capital /Assessment--2026/analysis/leaseup_dashboard_data.csv")
 
-# Create clean string tables for the AI
+df = pd.read_csv("df = pd.read_csv("leaseup_dashboard_data.csv"))
+
 market_txt = df.groupby('Market')['LeaseUpTime'].mean().round(2).to_string()
 archetype_txt = df.groupby('Archetype')[['LeaseUpTime', 'Premium_to_Submarket_Pct']].mean().round(3).to_string()
 submarket_txt = df.groupby('Submarket')['Premium_to_Submarket_Pct'].mean().sort_values(ascending=False).head(5).round(3).to_string()
 
-# NEW: Give the AI the actual names of the top properties so it can recommend them!
+
 top_props = df.sort_values('Premium_to_Submarket_Pct', ascending=False).groupby('Archetype').head(5)
 top_props_txt = top_props[['Archetype', 'Submarket', 'Name']].to_string(index=False)
 
@@ -32,10 +29,6 @@ Top 5 Highest Yielding Submarkets (Districts):
 Top Recommended Properties by Archetype and Submarket:
 {top_props_txt}
 """
-
-# ==========================================
-# 2. DASHBOARD UI & SIDEBAR
-# ==========================================
 st.set_page_config(page_title="Investment AI Assistant", layout="wide")
 st.title("🏙️ Real Estate Investment Dashboard")
 
@@ -45,9 +38,7 @@ with st.sidebar:
     st.write("---")
     st.write("Data processed and ready for NLP analysis.")
 
-# ==========================================
-# 3. GEOTAG EXPLORER (The Map)
-# ==========================================
+
 st.write("---")
 st.subheader("📍 Geotag Explorer: Find the Right Locality")
 st.write("Select an investment strategy below to see where those properties are successfully being built.")
@@ -72,9 +63,7 @@ with col2:
     else:
         st.warning("No GPS coordinates found for this selection.")
 
-# ==========================================
-# 4. AI CHAT INTERFACE
-# ==========================================
+
 st.write("---")
 st.subheader("🤖 Ask the Investment Assistant")
 user_input = st.text_input("Example: What is the best submarket to rent a Luxury High-Rise, and what are the top properties there?")
