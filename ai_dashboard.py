@@ -3,7 +3,7 @@ import pandas as pd
 import ollama
 
 
-df = pd.read_csv("df = pd.read_csv("leaseup_dashboard_data.csv"))
+df = pd.read_csv("leaseup_dashboard_data.csv")
 
 market_txt = df.groupby('Market')['LeaseUpTime'].mean().round(2).to_string()
 archetype_txt = df.groupby('Archetype')[['LeaseUpTime', 'Premium_to_Submarket_Pct']].mean().round(3).to_string()
